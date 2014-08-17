@@ -149,6 +149,41 @@ static NSInteger const kCalculateError = 11;
 
 #pragma mark - Logic
 
+- (BOOL)startAuthorization
+{
+    if (self.login && self.password && self.privateData) {
+        const char * usernameChar = [self.login cStringUsingEncoding:self.encoding];
+        const char * passwordChar = [self.password cStringUsingEncoding:self.encoding];
+        
+        const char * n_hex = [self.privateData.vNHex cStringUsingEncoding:self.encoding];
+        const char * g_hex = [self.privateData.vgHex cStringUsingEncoding:self.encoding];
+        
+        SRP_HashAlgorithm alg = (SRP_HashAlgorithm)self.hashAlgorithm;
+        SRP_NGType ng_type = SRP_NG_CUSTOM;
+        
+        _usr = srp_user_new(alg, ng_type, usernameChar, (unsigned char*)passwordChar, (unsigned int)strlen(passwordChar), n_hex, g_hex);
+        return YES;
+    }
+    NSString *localizedDescription;
+    if (self.login == nil) {
+        localizedDescription = @"Need `login` for initialize SRP authorizaion";
+    } else if (self.password == nil) {
+        localizedDescription = @"Need `password` for initialize SRP authorizaion";
+    } else {
+        localizedDescription = @"Need private data (N&g) for initialize SRP authorizaion";
+    }
+    _error = [NSError errorWithDomain:kSRPErrorDomain code:kInitError userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
+    return NO;
+}
+
+- (void)resetAuthorization
+{
+    _usr = nil;
+    _aBytes = nil;
+    _mBytes = nil;
+    _error = nil;
+}
+
 - (void)calculateA
 {
     if (self.usr) {
@@ -194,39 +229,11 @@ static NSInteger const kCalculateError = 11;
     _error = [NSError errorWithDomain:kSRPErrorDomain code:kCalculateError userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
 }
 
-- (BOOL)startAuthorization
+- (BOOL)validateR:(NSData*)rBytes
 {
-    if (self.login && self.password && self.privateData) {
-        const char * usernameChar = [self.login cStringUsingEncoding:self.encoding];
-        const char * passwordChar = [self.password cStringUsingEncoding:self.encoding];
-        
-        const char * n_hex = [self.privateData.vNHex cStringUsingEncoding:self.encoding];
-        const char * g_hex = [self.privateData.vgHex cStringUsingEncoding:self.encoding];
-        
-        SRP_HashAlgorithm alg = (SRP_HashAlgorithm)self.hashAlgorithm;
-        SRP_NGType ng_type = SRP_NG_CUSTOM;
-        
-        _usr = srp_user_new(alg, ng_type, usernameChar, (unsigned char*)passwordChar, (unsigned int)strlen(passwordChar), n_hex, g_hex);
-        return YES;
-    }
-    NSString *localizedDescription;
-    if (self.login == nil) {
-        localizedDescription = @"Need `login` for initialize SRP authorizaion";
-    } else if (self.password == nil) {
-        localizedDescription = @"Need `password` for initialize SRP authorizaion";
-    } else {
-        localizedDescription = @"Need private data (N&g) for initialize SRP authorizaion";
-    }
-    _error = [NSError errorWithDomain:kSRPErrorDomain code:kInitError userInfo:@{NSLocalizedDescriptionKey: localizedDescription}];
-    return NO;
-}
-
-- (void)resetAuthorization
-{
-    _usr = nil;
-    _aBytes = nil;
-    _mBytes = nil;
-    _error = nil;
+    const unsigned char * bytesR = [rBytes bytes];
+    srp_user_verify_session(self.usr, bytesR);
+    return srp_user_is_authenticated(self.usr);
 }
 
 @end

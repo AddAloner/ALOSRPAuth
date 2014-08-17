@@ -56,4 +56,6 @@ typedef NS_ENUM(NSUInteger, ALOSRPHashAlgorithm)
 - (BOOL)startAuthorization;
 - (void)resetAuthorization;
 
+- (BOOL)validateR:(NSData*)rBytes;
+
 @end
