@@ -1,15 +1,17 @@
-#ALOSRPAuth
+##ALOSRPAuth
 
-Alexey Yachmenov <aloner.brn@gmail.com>
+Alexey Yachmenov <[aloner.brn@gmail.com](mailto:aloner.brn@gmail.com)>
 
 Objective-C implementation of [Secure Remote Password protocol](http://srp.stanford.edu/) (SRP-6a). Based on [csrp](https://github.com/cocagne/csrp) library.
 
-#SRP Overview
+##SRP Overview
 
 SRP is a secure password-based authentication and key-exchange protocol. It solves the problem of authenticating clients to servers securely, in cases where the user of the client software must memorize a small secret (like a password) and carries no other secret information, and where the server carries a verifier for each user, which allows it to authenticate the client but which, if compromised, would not allow the attacker to impersonate the client. In addition, SRP exchanges a cryptographically-strong secret as a byproduct of successful authentication, which enables the two parties to communicate securely.
 
-#Usage Example
+##Usage Example
+-------------
 
+```objectivec
 // private constants
 NSString *N = @"115b8b692e0e045692cf280b436735c77a5a9e8a9e7ed56c965f87db5b2a2ece3";
 NSString *g = @"02";
@@ -51,3 +53,4 @@ if (rBytes.length > 0 && [auth validateR:rBytes]) {
 } else {
     NSLog(@"Invalide autentification");
 }
+```
