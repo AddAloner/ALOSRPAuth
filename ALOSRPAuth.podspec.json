@@ -1,7 +1,7 @@
 {
   "name": "ALOSRPAuth",
   "version": "0.1",
-  "license": "MIT",
+  "license": "GPL",
   "summary": "ALOSRPAuth is Obj-C implementation of Secure Remote Password protocol (SRP-6a)",
   "homepage": "https://github.com/AddAloner/ALOSRPAuth",
   "authors": {
