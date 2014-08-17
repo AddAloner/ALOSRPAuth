@@ -467,7 +467,6 @@ void srp_create_salted_verification_key( SRP_HashAlgorithm alg,
     init_random(); /* Only happens once */
     
     BN_rand(s, 32, -1, 0);
-    BN_hex2bn(&s, "b56c4feeef1b045dbe704ad8551d8a770dc14500f53b1a");
     
     x = calculate_x( alg, s, username, password, len_password );
 
