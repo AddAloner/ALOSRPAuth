@@ -58,6 +58,23 @@ static NSInteger const kCalculateError = 11;
     return self;
 }
 
+- (instancetype)initWithPrivateData:(ALOSRPPrivateData *)privateData andAlgorithm:(ALOSRPHashAlgorithm)algorithm {
+    if (self = [super init]) {
+        _encoding = kRequestEncoding;
+        _hashAlgorithm = algorithm;
+        _privateData = privateData;
+    }
+    return self;
+}
+
+- (instancetype)initWithPrivateData:(ALOSRPPrivateData *)privateData login:(NSString *)login password:(NSString *)password andAlgorithm:(ALOSRPHashAlgorithm)algorithm {
+    if (self = [self initWithPrivateData:privateData andAlgorithm:algorithm]) {
+        _login = login;
+        _password = password;
+    }
+    return self;
+}
+
 - (instancetype)initWithPrivateData:(ALOSRPPrivateData *)privateData
 {
     if (self = [self init]) {
