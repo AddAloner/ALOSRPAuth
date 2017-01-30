@@ -38,8 +38,10 @@ typedef NS_ENUM(NSUInteger, ALOSRPHashAlgorithm)
 @property (readonly) NSError *error;
 
 - (instancetype)initWithPrivateData:(ALOSRPPrivateData*)privateData;
+- (instancetype)initWithPrivateData:(ALOSRPPrivateData *)privateData andAlgorithm:(ALOSRPHashAlgorithm)algorithm;
 - (instancetype)initWithN:(NSString*)NHex g:(NSString*)gHex;
 - (instancetype)initWithPrivateData:(ALOSRPPrivateData*)privateData login:(NSString*)login password:(NSString*)password;
+- (instancetype)initWithPrivateData:(ALOSRPPrivateData *)privateData login:(NSString *)login password:(NSString *)password andAlgorithm:(ALOSRPHashAlgorithm)algorithm;
 - (instancetype)initWithN:(NSString*)NHex g:(NSString*)gHex login:(NSString*)login password:(NSString*)password;
 - (instancetype)initWithPrivateData:(ALOSRPPrivateData*)privateData login:(NSString*)login password:(NSString*)password salt:(NSData*)salt bBytes:(NSData*)bBytes;
 - (instancetype)initWithN:(NSString*)NHex g:(NSString*)gHex login:(NSString*)login password:(NSString*)password salt:(NSData*)salt bBytes:(NSData*)bBytes;
