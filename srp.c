@@ -717,7 +717,6 @@ void  srp_user_start_authentication( struct SRPUser * usr, const char ** usernam
     BN_CTX  *ctx  = BN_CTX_new();
     
     BN_rand(usr->a, 256, -1, 0);
-    BN_hex2bn(&usr->a, "b56c4feeef1b045dbe704ad8551d8a770dc14500f53b1a");
     
     BN_mod_exp(usr->A, usr->ng->g, usr->a, usr->ng->N, ctx);
         
